@@ -32,27 +32,3 @@ function testimonial_manager_custom_post_type()
     );
 }
 add_action('init', 'testimonial_manager_custom_post_type');
-
-
-// Add submenu under "Testimonials"
-
-function all_testimonials_page()
-{
-
-
-    add_submenu_page(
-        'edit.php?post_type=testimonial',
-        'All Testimonials',
-        'All Testimonials',
-        'manage_options',
-        'all-testimonials',
-        'all_testimonials_page_callback'
-    );
-}
-
-add_action('admin_menu', 'all_testimonials_page');
-
-function all_testimonials_page_callback()
-{
-    echo '<div class="wrap"><h1>All Testimonials</h1></div>';
-}
