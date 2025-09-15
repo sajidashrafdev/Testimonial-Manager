@@ -49,30 +49,46 @@ function wp_tm_page()
                     <th>Email</th>
                     <th>Message</th>
                     <th>Rating</th>
+                    <th>Current Date</th>
                     <th>Status</th>
                 </tr>
             </thead>
             <tbody>';
-            $submitted_testimonials = get_option('wp-tm-testimonial');
-            if (!empty($submitted_testimonials)) {
-                for ($i = 0; $i < count($submitted_testimonials); $i++) {
-                    echo '<tr>';
-                    echo '<td>' . ($i + 1) . '</td>';
-                    echo '<td>' . esc_html($submitted_testimonials[$i]['post_title']) . '</td>';
-                    echo '<td>' . esc_html($submitted_testimonials[$i]['email']) . '</td>';
-                    echo '<td>' . esc_html($submitted_testimonials[$i]['post_content']) . '</td>';
-                    echo '<td>' . esc_html($submitted_testimonials[$i]['rating']) . '</td>';
-                    echo '<td>' . esc_html($submitted_testimonials[$i]['post_status']) . '</td>';
-                    echo '</tr>';
-                }
-            } else {
-                echo '<tr><td colspan="6">No testimonials found.</td></tr>';
-            }
-            echo '</tbody></table>';
+    $submitted_testimonials = get_option('wp-tm-testimonial');
+    if (!empty($submitted_testimonials)) {
+        for ($i = 0; $i < count($submitted_testimonials); $i++) {
+            echo '<tr>';
+            echo '<td>' . ($i + 1) . '</td>';
+            echo '<td>' . esc_html($submitted_testimonials[$i]['post_title']) . '</td>';
+            echo '<td>' . esc_html($submitted_testimonials[$i]['email']) . '</td>';
+            echo '<td>' . esc_html($submitted_testimonials[$i]['post_content']) . '</td>';
+            echo '<td>' . esc_html($submitted_testimonials[$i]['rating']) . '</td>';
+            echo '<td>' . esc_html($submitted_testimonials[$i]['current_date']) . '</td>';
+            echo '<td>
+                        <form method="post" style="display: inline-block;">
+                            <select id="tm_pending" name="tm_pending">
+                                <option value="Pending">Pending</option>
+                                <option value="Approved">Approved</option>
+                                <option value="Rejected">Rejected</option>
+                            </select>
+                            <button type="submit">Update</button>
+                        </form>';
+                        if (isset($_POST["tm_pending"])) {
+                            $submitted_testimonials[$i]["post_status"] = sanitize_text_field($_POST["tm_pending"]);
+                            update_option("wp-tm-testimonial", $submitted_testimonials);
+                        }'
+                    </td>';
+            echo '</tr>';
+        }
+    } else {
+        echo '<tr><td colspan="6">No testimonials found.</td></tr>';
+    }
+    echo '</tbody></table>';
 }
 
 // Function to display the add new testimonial page content
-function add_new_testimonial_page(){
+function add_new_testimonial_page()
+{
     echo '<h1>Add New Testimonial</h1><br><br>';
     echo wp_tm_client_review_form();
 }
@@ -134,12 +150,13 @@ function wp_tm_handle_form_submission()
         } else {
             $testimonial_post = get_option('wp-tm-testimonial');
         }
-        
+
         $testimonial_post[] = array(
             'post_title'   => $name,
             'email'        => $email,
             'post_content' => $message,
             'rating'       => $rating,
+            'current_date' => current_time('mysql'),
             'post_status'  => 'pending', // Set to 'pending' for admin review
         );
 
