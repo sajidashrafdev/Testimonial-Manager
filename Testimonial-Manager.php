@@ -66,17 +66,13 @@ function wp_tm_page()
             echo '<td>' . esc_html($submitted_testimonials[$i]['current_date']) . '</td>';
             echo '<td>
                         <form method="post" style="display: inline-block;">
-                            <select id="tm_pending" name="tm_pending">
-                                <option value="Pending">Pending</option>
-                                <option value="Approved">Approved</option>
-                                <option value="Rejected">Rejected</option>
+                            <input type="hidden" name="testimonial_id" value="' . $i . '">
+                            <select id="tm_pending" name="tm_pending" onchange="this.form.submit()">
+                                <option value="Pending" ' . selected($submitted_testimonials[$i]["post_status"], "Pending", false) . '>Pending</option>
+                                <option value="Approved" ' . selected($submitted_testimonials[$i]["post_status"], "Approved", false) . '>Approved</option>
+                                <option value="Rejected" ' . selected($submitted_testimonials[$i]["post_status"], "Rejected", false) . '>Rejected</option>
                             </select>
-                            <button type="submit">Update</button>
-                        </form>';
-                        if (isset($_POST["tm_pending"])) {
-                            $submitted_testimonials[$i]["post_status"] = sanitize_text_field($_POST["tm_pending"]);
-                            update_option("wp-tm-testimonial", $submitted_testimonials);
-                        }'
+                        </form>
                     </td>';
             echo '</tr>';
         }
@@ -84,6 +80,17 @@ function wp_tm_page()
         echo '<tr><td colspan="6">No testimonials found.</td></tr>';
     }
     echo '</tbody></table>';
+}
+
+// Function to handle status change
+add_action('init', 'wp_tm_pending_status');
+function wp_tm_pending_status()
+{
+    if (isset($_POST["tm_pending"])) {
+        $submitted_testimonials = get_option("wp-tm-testimonial");
+        $submitted_testimonials[$_POST["testimonial_id"]]["post_status"] = sanitize_text_field($_POST["tm_pending"]);
+        update_option("wp-tm-testimonial", $submitted_testimonials);
+    }
 }
 
 // Function to display the add new testimonial page content
