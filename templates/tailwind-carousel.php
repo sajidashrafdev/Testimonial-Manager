@@ -12,14 +12,14 @@
         <img class="absolute inset-0 w-full h-full object-cover object-center" src="https://stripe.com/img/v3/payments/overview/photos/missguided.jpg" alt="">
         <div class="absolute inset-0 w-full h-full bg-indigo-900 opacity-75"></div>
         <div class="absolute inset-0 w-full h-full flex items-center justify-center fill-current text-white">
-          <h1 class="text-white p-12 justify-center text-center text-4xl font-bold"><?php echo esc_html($submitted_testimonials[13]['post_title']); ?></h1>
+          <h1 class="text-white p-12 justify-center text-center text-4xl font-bold"><?php echo esc_html($submitted_testimonials[0]['post_title']); ?></h1>
         </div>
       </div>
       <div class="w-full md:w-3/5 h-full flex items-center bg-gray-100 rounded-lg">
         <div class="p-12 md:pr-24 md:pl-16 md:py-12">
-          <p class="text-gray-600"><span class="text-gray-900"><?php echo esc_html($submitted_testimonials[13]['post_title']); ?></span> <?php echo esc_html($submitted_testimonials[13]['post_content']); ?></p>
+          <p class="text-gray-600"><span class="text-gray-900"><?php echo esc_html($submitted_testimonials[0]['post_title']); ?></span> <?php echo esc_html($submitted_testimonials[0]['post_content']); ?></p>
           <a class="flex items-baseline mt-3 text-indigo-600 hover:text-indigo-900 focus:text-indigo-900" href="">
-            <span><?php echo esc_html($submitted_testimonials[13]['email']); ?></span>
+            <span><?php echo esc_html($submitted_testimonials[0]['email']); ?></span>
             <span class="text-xs ml-1">&#x279c;</span>
           </a>
         </div>

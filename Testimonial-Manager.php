@@ -187,4 +187,4 @@ function wp_tm_handle_form_submission()
             echo '<p style="color:red;">There was an error submitting your testimonial. Please try again.</p>';
         }
     }
-}
+   }
