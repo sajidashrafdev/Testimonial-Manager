@@ -11,6 +11,14 @@ if (! defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
+// Shortcode to display Tailwind CSS Carousel
+function my_tailwind_component() {
+    ob_start();
+    include plugin_dir_path(__FILE__) . 'templates/tailwind-carousel.php';
+    return ob_get_clean();
+}
+add_shortcode('tailwind-test', 'my_tailwind_component');
+
 // Function to display the main menu and submenu on sidebar in dashboard
 add_action('admin_menu', 'wp_tm_menu');
 function wp_tm_menu()
@@ -39,7 +47,7 @@ function wp_tm_menu()
 function wp_tm_page()
 {
     echo '<h1>All Testimonials</h1>';
-    echo '<p>Use the shortcode <code>[wp-tm-testimonials]</code> to display testimonials on any page or post.</p>';
+    echo '<p>Use the shortcode <code>[wp-tm-form]</code> to display testimonials on any page or post.</p>';
     echo '<h2>View submitted testimonials below:</h2>';
     echo '<table border="1" cellpadding="10" cellspacing="0">
             <thead>
@@ -49,7 +57,7 @@ function wp_tm_page()
                     <th>Email</th>
                     <th>Message</th>
                     <th>Rating</th>
-                    <th>Current Date</th>
+                    <th>Date</th>
                     <th>Status</th>
                 </tr>
             </thead>
@@ -80,7 +88,10 @@ function wp_tm_page()
         echo '<tr><td colspan="6">No testimonials found.</td></tr>';
     }
     echo '</tbody></table>';
+
+    echo my_tailwind_component();
 }
+
 
 // Function to handle status change
 add_action('init', 'wp_tm_pending_status');
@@ -171,7 +182,7 @@ function wp_tm_handle_form_submission()
         $post_id = update_option("wp-tm-testimonial", $testimonial_post);
 
         if ($post_id) {
-            echo '<p style="color:green;">Thank you for your testimonial! It is pending approval.</p>';
+            echo '<p style="color:green;">Thank you for your testimonial!</p>';
         } else {
             echo '<p style="color:red;">There was an error submitting your testimonial. Please try again.</p>';
         }
